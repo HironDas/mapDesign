@@ -1,0 +1,8 @@
+node_modules/
+*.png
+# *.jpg
+*.gif
+*.ai
+*.svg
+data/
+*.zip

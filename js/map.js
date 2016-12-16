@@ -1,3 +1,8 @@
+var MapViewer = function(){
+    this.img = arguments[0]
+    this.options = arguments[1];
+}
+
 var map="";
 map += "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 map += "<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->";

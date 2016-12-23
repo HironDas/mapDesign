@@ -1,166 +1,50 @@
-var MapViewer = function(){
+var MapViewer = function() {
     this.img = arguments[0]
-    this.options = arguments[1];
+    this.data = arguments[1];
+    this.options = arguments[2] || {};
+    this.options.margin = this.options.margin || {};
+
+    var img = new Image();
+
+    console.log(this.img);
 }
 
-var map="";
-map += "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
-map += "<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->";
-map += "<!DOCTYPE svg PUBLIC \"-\/\/W3C\/\/DTD SVG 1.1\/\/EN\" \"http:\/\/www.w3.org\/Graphics\/SVG\/1.1\/DTD\/svg11.dtd\">";
-map += "<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\"";
-map += "	 viewBox=\"0 0 612 792\" enable-background=\"new 0 0 612 792\" xml:space=\"preserve\">";
-map += "<g id=\"Layer_1_1_\">";
-map += "	";
-map += "		<rect x=\"202.2\" y=\"316.8\" fill=\"#0DA93C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"25.3\" height=\"34.1\"\/>";
-map += "	";
-map += "		<rect x=\"251.5\" y=\"316.9\" fill=\"#96BE54\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"20.6\" height=\"32.2\"\/>";
-map += "	";
-map += "		<rect x=\"272.9\" y=\"316.9\" fill=\"#96BE54\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"31.4\" height=\"32.2\"\/>";
-map += "	<polygon fill=\"#96BE54\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		325.7,351 316.7,351 313.5,349.2 304.3,349.2 304.1,316.9 325.7,316.9 	\"\/>";
-map += "	";
-map += "		<rect x=\"325.7\" y=\"302.3\" fill=\"#96BE54\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"17.5\" height=\"48.7\"\/>";
-map += "	";
-map += "		<rect x=\"343.3\" y=\"302.3\" fill=\"#96BE54\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"11.5\" height=\"20.8\"\/>";
-map += "	<polygon fill=\"#96BE54\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		348.1,351 343.3,351 343.3,323.1 354.7,323.1 354.7,343.7 	\"\/>";
-map += "	<polygon fill=\"#FF7553\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		501,338.3 464.1,378.7 494.3,405 529.6,366.2 520.4,356.8 583.4,293.2 555.9,265.8 563.7,256.3 528.4,222.6 457.4,294 	\"\/>";
-map += "	<polygon fill=\"#FF7553\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		402.1,509.4 447.6,459.2 434.3,445 447.6,430.1 431.1,413.7 447.6,396 476.3,424.6 484.5,423.9 484.5,440.7 539,494.1 462.9,569 	";
-map += "		\"\/>";
-map += "	<polygon fill=\"#FF7553\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		223.6,405 223.6,416 236.2,430.1 236.2,480.7 343.2,480.7 343.2,405 	\"\/>";
-map += "	<polygon fill=\"#0DA93C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		250.7,349.3 231.2,349.3 229.7,350.9 227.5,350.9 227.5,316.9 250.7,316.9 	\"\/>";
-map += "	<polyline fill=\"#9DABEB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		402.1,477.2 406.8,462.9 423.9,463.7 433.6,474.7 418,491.8 402.1,477.2 	\"\/>";
-map += "	<path fill=\"#196B36\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" d=\"M433.6,474.7\"\/>";
-map += "	<polygon fill=\"#008CA3\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		476.3,425.3 489,412.2 458.8,384.3 447.4,396.5 	\"\/>";
-map += "	<polygon fill=\"#008CA3\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		425.1,419.5 425.1,436.4 434,445.3 447.6,430.1 431.1,413.7 	\"\/>";
-map += "	<polygon fill=\"#657BCB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		216,372.3 217.8,371.1 217.8,364.9 236.2,364.9 236.2,400.6 216,400.6 	\"\/>";
-map += "	";
-map += "		<rect x=\"236.2\" y=\"364.9\" fill=\"#657BCB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"11.4\" height=\"14.8\"\/>";
-map += "	<polygon fill=\"#657BCB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		248,364.9 248,380.2 236.8,380.2 236.8,400.6 271.7,400.6 271.7,366.8 252.6,366.8 	\"\/>";
-map += "	";
-map += "		<rect x=\"137.5\" y=\"367.6\" fill=\"#657BCB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"13.7\" height=\"48.1\"\/>";
-map += "	<polygon fill=\"#9870BB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"367,378 ";
-map += "		367,400.6 387.6,400.6 	\"\/>";
-map += "	<polygon fill=\"#9870BB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		324.6,367 310.9,380.9 324.6,380.9 	\"\/>";
-map += "	";
-map += "		<rect x=\"324.6\" y=\"367\" fill=\"#9870BB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"11.5\" height=\"13.9\"\/>";
-map += "	";
-map += "		<rect x=\"310.9\" y=\"380.9\" fill=\"#9870BB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"25.1\" height=\"19.8\"\/>";
-map += "	";
-map += "		<rect x=\"346.6\" y=\"416.4\" fill=\"#9870BB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"20.4\" height=\"16.7\"\/>";
-map += "	";
-map += "		<rect x=\"367\" y=\"416.4\" fill=\"#9870BB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"12.6\" height=\"16.7\"\/>";
-map += "	<polygon fill=\"#9870BB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		385.6,434.2 379.5,434.2 379.5,416.4 391.6,416.4 391.6,429.4 	\"\/>";
-map += "	<polygon fill=\"#9870BB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		336.1,367 358.3,367 367,378 367,416.4 346.6,416.4 346.6,400.6 336.1,400.6 	\"\/>";
-map += "	<polygon fill=\"#FF9D0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		389.6,383 403.2,370.2 409.5,377.5 396.5,390.4 	\"\/>";
-map += "	<polygon fill=\"#FF9D0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		379.6,351.7 379.6,358 388.4,368.6 403.7,355.6 400.5,351.7 	\"\/>";
-map += "	<polygon fill=\"#FF9D0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		382,374.5 395.5,362.7 402.8,370.5 389.6,383 	\"\/>";
-map += "	<polygon fill=\"#FF9D0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		379.6,351.7 373.9,351.7 370,355.3 370,361 381.8,374.4 388.4,368.6 379.6,358 	\"\/>";
-map += "	<polygon fill=\"#FF9D0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		400.1,351.1 406.3,345.3 410.7,345.3 415.5,339.8 428.9,353.2 418.8,363.4 420.9,365.6 409.3,377.3 395.3,362.7 403.7,355.6 	\"\/>";
-map += "	";
-map += "		<rect x=\"272.1\" y=\"391.3\" fill=\"#657BCB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"19.9\" height=\"9.3\"\/>";
-map += "	";
-map += "		<rect x=\"272.1\" y=\"370.2\" fill=\"#657BCB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"8.3\" height=\"20.8\"\/>";
-map += "	<polygon fill=\"#657BCB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		291.9,391 280.3,391 280.3,370.2 291.9,382.7 	\"\/>";
-map += "	<polygon fill=\"#9870BB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		367,400.6 367,416.4 391.6,416.4 391.6,405 387.6,400.6 	\"\/>";
-map += "	";
-map += "		<rect x=\"346.6\" y=\"451.9\" fill=\"#9DABEB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"17.5\" height=\"18.6\"\/>";
-map += "	<polygon fill=\"#9DABEB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		364.1,451.9 379.2,451.9 386.2,461.3 379.6,468.4 364.1,468.4 	\"\/>";
-map += "	<polygon fill=\"#9DABEB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		346.6,470.5 364.1,470.5 364.1,468.4 379.6,468.4 386.2,461.3 391.4,467.6 379.5,495 376.5,491.2 346.6,491 	\"\/>";
-map += "	";
-map += "		<rect x=\"383.4\" y=\"303\" fill=\"#FF9D0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"13.9\" height=\"9.7\"\/>";
-map += "	";
-map += "		<rect x=\"383.4\" y=\"312.8\" fill=\"#FF9E0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"13.9\" height=\"11.8\"\/>";
-map += "	<polygon fill=\"#FF9D0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		383.5,336.1 372.7,336.1 369.4,333.2 369.4,303 383.5,303 	\"\/>";
-map += "	<polygon fill=\"#FF9D0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		397.3,317.4 412.3,317.4 412.3,323.1 402,332.7 397.3,332.7 	\"\/>";
-map += "	<polygon fill=\"#FF9D0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		383.4,324.4 397.3,324.4 397.3,333.5 394.7,336.1 383.4,336.1 	\"\/>";
-map += "	<polygon fill=\"#FF9D0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		432.5,336.6 424.6,344.5 416.6,336.5 421.9,331.1 427.3,331.1 	\"\/>";
-map += "	<polygon fill=\"#FF9D0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		439.2,343.7 431.6,351.7 424.9,344.5 432.6,336.8 434,338.3 434.1,338.3 	\"\/>";
-map += "	<polygon fill=\"#FF9E0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		447.5,352.5 439.5,344.1 432.1,351.9 432.1,352.1 434.8,354.7 433,356.4 439,361.7 	\"\/>";
-map += "	<polygon fill=\"#FF9D0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		447.5,352.5 447.5,352.5 439,361.7 433,356.4 424.2,365.2 442.1,383.8 445.3,380.7 444.9,375.8 453.4,368.1 453.4,358.7 ";
-map += "		452.2,357.4 	\"\/>";
-map += "	";
-map += "		<rect x=\"401.2\" y=\"302.3\" fill=\"#FB7EB8\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"15.5\" height=\"11.5\"\/>";
-map += "	";
-map += "		<rect x=\"418.8\" y=\"302.3\" fill=\"#FF1300\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"10.6\" height=\"11.5\"\/>";
-map += "	";
-map += "		<rect x=\"429.4\" y=\"302.3\" fill=\"#A741AA\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"7.8\" height=\"11.5\"\/>";
-map += "	<polygon fill=\"#FB7EB8\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		437.3,302.3 446.1,302.2 451.9,295.2 456.9,300.5 451.3,305.5 451.2,313.9 437.3,313.9 	\"\/>";
-map += "	<polygon fill=\"#FB7EB8\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		451.2,313.9 451.3,305.5 456.9,300.5 467.7,311.2 460.6,318.6 455.8,319.1 	\"\/>";
-map += "	<polygon fill=\"#FB7EB8\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		468,325.9 475.2,319 467.7,311.2 460.6,318.6 	\"\/>";
-map += "	<polygon fill=\"#FB7EB8\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		472.3,329.9 478.6,330.3 482.7,325.9 475.2,319 468,325.9 	\"\/>";
-map += "	<polyline fill=\"#FF9D0C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		396.5,390.4 420.9,365.6 422.4,367 424.2,365.2 442.5,383.4 422.1,404 409.5,405 396.2,390.4 	\"\/>";
-map += "	<polyline fill=\"none\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		447.5,352.5 447.5,352.5 439.5,344.1 439.2,343.7 434.1,338.3 434,338.3 432.5,336.6 427.3,331.1 426.1,329.9 	\"\/>";
-map += "	";
-map += "		<circle fill=\"#FF3000\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" cx=\"302.1\" cy=\"390.4\" r=\"4.4\"\/>";
-map += "<\/g>";
-map += "<g id=\"Layer_2\">";
-map += "	";
-map += "		<rect x=\"5.1\" y=\"268.1\" fill=\"#FF7553\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"98.5\" height=\"169.9\"\/>";
-map += "	<polygon fill=\"#657BCB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		114.9,378 124.4,367.2 134.8,367.2 134.8,416.8 154.4,416.8 154.4,437 114.9,437 	\"\/>";
-map += "	";
-map += "		<rect x=\"137.7\" y=\"367.6\" fill=\"#FD1824\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"11\" height=\"11.6\"\/>";
-map += "	";
-map += "		<rect x=\"151.1\" y=\"367.7\" fill=\"#657BCB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"12\" height=\"48\"\/>";
-map += "	";
-map += "		<rect x=\"163.1\" y=\"367.7\" fill=\"#657BCB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"12\" height=\"48\"\/>";
-map += "	";
-map += "		<rect x=\"187.4\" y=\"365.6\" fill=\"#657BCB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"13.3\" height=\"50.1\"\/>";
-map += "	<polygon fill=\"#657BCB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		187.2,415.6 173.9,415.6 173.9,367.7 177.3,365.6 187.2,365.6 	\"\/>";
-map += "	";
-map += "		<rect x=\"200.6\" y=\"365.6\" fill=\"#657BCB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"12.2\" height=\"50.1\"\/>";
-map += "	<polygon fill=\"#0DA93C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		114.2,279.1 135,279.1 135,324.3 123.4,324.3 123.4,345.5 114.2,336.4 	\"\/>";
-map += "	";
-map += "		<rect x=\"134.6\" y=\"279.1\" fill=\"#0DA93C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"19.4\" height=\"22.6\"\/>";
-map += "	";
-map += "		<rect x=\"123.7\" y=\"324.3\" fill=\"#0DA93C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"11.5\" height=\"21.3\"\/>";
-map += "	";
-map += "		<rect x=\"154\" y=\"279.1\" fill=\"#0DA93C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"13.3\" height=\"22.6\"\/>";
-map += "	<polygon fill=\"#0DA93C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		154,348.6 146.2,348.6 143.4,345.5 134.6,345.5 134.6,301.8 154,301.8 	\"\/>";
-map += "	";
-map += "		<rect x=\"154.6\" y=\"302.2\" fill=\"#0DA93C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" width=\"19.1\" height=\"46.2\"\/>";
-map += "	<polygon fill=\"#0DA93C\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		201.4,350.9 176.1,350.9 173.9,348.6 173.9,302.3 188.3,302.3 199.1,302.3 198.9,317.1 201.4,317.1 	\"\/>";
-map += "	<polygon fill=\"#9DABEB\" stroke=\"#000000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-miterlimit=\"10\" points=\"";
-map += "		393.7,500.6 402.1,477.2 418,491.8 402.1,509.4 	\"\/>";
-map += "<\/g>";
-map += "<\/svg>";
-map += "";
+MapViewer.prototype.getImgSize = function(url, callback) {
+    var img = new Image();
+    img.src = url;
+    img.onload = function() { return callback(this.width, this.height); }
+}
+
+MapViewer.prototype.setWidth = function(width) {
+    this.options.width = width;
+    this.render();
+    return this;
+}
+
+MapViewer.prototype.render = function() {
+    var ratio = this.getImgSize(this.img, function(widht, height) {
+        return +height / +width;
+    });
+    console.log(ratio);
+    var margin = {
+        top: this.options.margin.top || 0,
+        right: this.options.margin.right || 0,
+        bottom: this.options.margin.bottom || 0,
+        left: this.options.margin.left || 0
+    };
+
+    var width = this.options.width || 900;
+    var height = width * ratio;
+
+    var id = this.options.id || 'body';
+    console.log(id);
+    var svg = d3.select(id).append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", 500)
+        // .attr("height", height + margin.top + margin.bottom)
+        .append("svg")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+        .attr('width', width)
+        .attr('height', height)
+        .attr("xlink:href", this.img);
+}

@@ -1,0 +1,23 @@
+{
+  "name": "map_design",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "d3": "^4.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HironDas/mapDesign.git"
+  },
+  "author": "Hiron Das",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HironDas/mapDesign/issues"
+  },
+  "homepage": "https://github.com/HironDas/mapDesign#readme"
+}

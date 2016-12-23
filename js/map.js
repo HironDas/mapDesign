@@ -9,10 +9,16 @@ var MapViewer = function() {
     console.log(this.img);
 }
 
-MapViewer.prototype.getImgSize = function(url, callback) {
+MapViewer.prototype.getImgSize = function(callback) {
     var img = new Image();
-    img.src = url;
-    img.onload = function() { return callback(this.width, this.height); }
+    // var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    // img.createElementNS(svg, 'image');
+    img.src = this.img;
+    img.onload = function() {
+        console.log(this.getBoundingClientRect());
+        var d = callback(this.width, this.height);
+        return d;
+    }
 }
 
 MapViewer.prototype.setWidth = function(width) {
@@ -22,10 +28,13 @@ MapViewer.prototype.setWidth = function(width) {
 }
 
 MapViewer.prototype.render = function() {
-    var ratio = this.getImgSize(this.img, function(widht, height) {
-        return +height / +width;
+    var ratio = this.getImgSize(function(width, height) {
+        console.log(height + width);
+        return height + width;
     });
+
     console.log(ratio);
+
     var margin = {
         top: this.options.margin.top || 0,
         right: this.options.margin.right || 0,
@@ -40,11 +49,17 @@ MapViewer.prototype.render = function() {
     console.log(id);
     var svg = d3.select(id).append("svg")
         .attr("width", width + margin.left + margin.right)
-        .attr("height", 500)
-        // .attr("height", height + margin.top + margin.bottom)
-        .append("svg")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        .attr('width', width)
-        .attr('height', height)
-        .attr("xlink:href", this.img);
+        .attr("height", 500);
+
+    d3.xml(this.img, function(err, documentFragment) {
+        console.log(documentFragment);
+        if (err) {
+            consoel.log(err);
+            return;
+        }
+        var imgNode = documentFragment.getElementsByTagName("svg")[0];;
+
+        svg.node().appendChild(imgNode);
+
+    })
 }

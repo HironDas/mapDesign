@@ -10,12 +10,13 @@
     <script src="node_modules/d3/build/d3.js"></script>
     <script src="js/map.js"></script>
     <div id="map">the map is shown here </div>
-    <embed type="image/svg+xml" src="./mall_directory_bsm-1.svg" />
+    <!--<embed type="image/svg+xml" src="./mall_directory_bsm-1.svg" />-->
 
     <script>
         var data = {};
         var myMap = new MapViewer("./mall_directory_bsm-1.svg", data, {
-            id: '#map'
+            id: '#map',
+            width: 500
         });
         myMap.render();
     </script>

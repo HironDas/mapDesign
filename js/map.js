@@ -12,7 +12,7 @@ var MapViewer = function() {
 
 MapViewer.prototype.setWidth = function(width) {
     this.options.width = width;
-    this.render();
+    // this.render();
     return this;
 }
 
@@ -38,8 +38,6 @@ MapViewer.prototype.render = function() {
         }
         var imgNode = documentFragment.getElementsByTagName("svg")[0];
 
-        console.log();
-        console.log();
         ratio = imgNode.height.baseVal.value / imgNode.width.baseVal.value
         height = width * ratio;
         var svg = d3.select(id).append("svg")
@@ -50,6 +48,5 @@ MapViewer.prototype.render = function() {
         svg.node().appendChild(imgNode);
 
     })
-
-
+    return this;
 }

@@ -30,6 +30,9 @@ MapViewer.prototype.render = function() {
 
     d3.select(id).selectAll('svg').remove();
 
+    this.svg = d3.select(id).append("svg");
+    var svg = this.svg;
+
     d3.xml(this.img, function(err, documentFragment) {
         console.log(documentFragment);
         if (err) {
@@ -40,8 +43,8 @@ MapViewer.prototype.render = function() {
 
         ratio = imgNode.height.baseVal.value / imgNode.width.baseVal.value
         height = width * ratio;
-        var svg = d3.select(id).append("svg")
-            .attr("width", width + margin.left + margin.right)
+
+        svg.attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom);
 
 

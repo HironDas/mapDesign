@@ -55,6 +55,7 @@ MapViewer.prototype.render = function() {
             return;
         }
         var imgNode = documentFragment.getElementsByTagName("svg")[0];
+        console.log(imgNode.childNodes);
 
         ratio = imgNode.height.baseVal.value / imgNode.width.baseVal.value;
         console.log(ratio);
@@ -63,15 +64,29 @@ MapViewer.prototype.render = function() {
         svg.attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom);
 
-
         var map = svg.node().appendChild(imgNode);
 
-        svg.append('g')
+        var tooltip = svg.select('#Layer_1').append('g')
             .attr('class', 'tooltip')
             .style('display', 'none')
-            .attr("transform", "translate(0,0)")
-            .append('text')
+        var tooltipBack = tooltip.append('rect')
+            .attr('fill', tooltipColor)
+            .attr('height', '50')
+            .attr('width', '150')
+            .attr('opacity', '0.5');
+
+        var tooltipsText = tooltip.append('text')
+            .attr('x', '0')
+            .attr('y', '0')
             .attr('class', 'toolTipValue');
+
+        tooltipsText.append('tspan')
+            .attr('class', 'titleText');
+
+
+        tooltipsText.append('tspan')
+            .attr('class', 'stallText')
+            .attr('dy', '1.3em');
 
         svg.selectAll('#stall rect')
             .on('mouseover', function() {
@@ -82,21 +97,36 @@ MapViewer.prototype.render = function() {
 
                 index = getIndex(data, this.id);
 
-                console.log(index);
-
                 var bbox = this.getBBox();
+                console.log(bbox);
+
                 if (index !== 'undefined') {
                     d3.select('.tooltip')
-                        /*.style('top', (+bbox.y) + (+bbox.height) / 2 + 'px')
-                        .style('left', (+bbox.x) + (+bbox.width) / 2 + 'px')
-                        .style('opacity', '0.6')
-                        .style('color', '#fff')
-                        .style('pointer-events', 'all')*/
-                        .style('display', 'block')
-                        .attr("transform", "translate(" + (bbox.x + bbox.width / 2) + "," + (bbox.y + bbox.height / 2) + ")")
-                        // .append('text')
+                        .style('display', 'block');
+
+                    tooltipBack.attr('x', (bbox.x + bbox.width / 2) - 75)
+                        .attr('y', (bbox.y + bbox.height / 2) - 60);
+
+
                     d3.select('.toolTipValue')
-                        .html('Title:' + data[index].title + "<br/> Stall: " + data[index].stall + "");
+                        .attr('x', (bbox.x + bbox.width / 2))
+                        .attr('y', (bbox.y + bbox.height / 2))
+                        .attr('dy', '-40')
+                        .attr('font-family', "Verdana")
+                        .attr('font-size', "10")
+                        .attr('text-anchor', 'middle');
+                    // .append('tspan')
+                    // .text('<tspan>Title:' + data[index].title + "</tspan> <tspan> Stall: " + data[index].stall + "</tspan>");
+
+                    d3.select('.titleText')
+                        .attr('x', (bbox.x + bbox.width / 2))
+                        .style('font-weight', 'bold')
+                        .style('fill', '#fff')
+                        .text('Title:' + data[index].title);
+                    d3.select('.stallText')
+                        .attr('x', (bbox.x + bbox.width / 2))
+                        .text('Stall:' + data[index].stall);
+
                     // console.log(data[index].title);
                     if (data[index].stall.length > 1) {
                         data[index].stall.forEach(function(d) {

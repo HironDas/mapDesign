@@ -3,6 +3,8 @@ var MapViewer = function() {
     this.data = arguments[1];
     this.options = arguments[2] || {};
     this.options.margin = this.options.margin || {};
+    this.options.stallHoverColor = this.options.stallHoverColor || '#ff0000';
+    this.options.toolTipBgColor = this.options.toolTipBgColor || '#0000ff';
 
     var img = new Image();
 
@@ -16,8 +18,11 @@ MapViewer.prototype.setWidth = function(width) {
     return this;
 }
 
+
 MapViewer.prototype.render = function() {
     var data = this.data;
+    var stallColor = this.options.stallHoverColor;
+    var tooltipColor = this.options.toolTipBgColor;
     var index;
     var margin = {
         top: this.options.margin.top || 0,
@@ -33,18 +38,15 @@ MapViewer.prototype.render = function() {
 
     this.svg = d3.select(id).append("svg");
     var svg = this.svg;
-
-    d3.select(id).append('div')
-        .attr('class', 'tooltip')
-        .style('position', 'absolute')
-        .style('top', '0px')
-        .style('left', '0px')
-        .style('border', '1px #999 solid')
-        .style('padding', '5px')
-        .style('background-color', 'lightblue')
-        .style('display', 'none');
+    /*.attr('position', 'absolute')
+    .style('top', '0px')
+    .style('left', '0px')
+    .style('border', '1px #999 solid')
+    .style('padding', '5px')
+    .style('background-color', tooltipColor)
+    .style('pointer-events', 'none')
+    .style('line-height', '1')*/
     // .html('Hiron Chandra DAs');
-
 
     d3.xml(this.img, function(err, documentFragment) {
         console.log(documentFragment);
@@ -54,7 +56,8 @@ MapViewer.prototype.render = function() {
         }
         var imgNode = documentFragment.getElementsByTagName("svg")[0];
 
-        ratio = imgNode.height.baseVal.value / imgNode.width.baseVal.value
+        ratio = imgNode.height.baseVal.value / imgNode.width.baseVal.value;
+        console.log(ratio);
         height = width * ratio;
 
         svg.attr("width", width + margin.left + margin.right)
@@ -63,32 +66,41 @@ MapViewer.prototype.render = function() {
 
         var map = svg.node().appendChild(imgNode);
 
+        svg.append('g')
+            .attr('class', 'tooltip')
+            .style('display', 'none')
+            .attr("transform", "translate(0,0)")
+            .append('text')
+            .attr('class', 'toolTipValue');
+
         svg.selectAll('#stall rect')
             .on('mouseover', function() {
                 console.log(this.getBBox());
                 console.log(d3.select('.tooltip'));
                 // this.style('fill', 'red');
-                this.attributes.fill.value = '#ff0000';
+                this.attributes.fill.value = stallColor;
 
-                for (var j = 0; j < data.length; j++) {
-                    for (var i = 0; i < data[j].stall.length; i++) {
-                        if (data[j].stall[i] == this.id.slice(2)) {
-                            index = j;
-                        }
-                    }
-                }
+                index = getIndex(data, this.id);
+
+                console.log(index);
 
                 var bbox = this.getBBox();
-                if (index != 'undefined') {
+                if (index !== 'undefined') {
                     d3.select('.tooltip')
-                        .style('top', bbox.y + bbox.height / 2 + 'px')
-                        .style('left', bbox.x + bbox.width / 2 + 'px')
+                        /*.style('top', (+bbox.y) + (+bbox.height) / 2 + 'px')
+                        .style('left', (+bbox.x) + (+bbox.width) / 2 + 'px')
+                        .style('opacity', '0.6')
+                        .style('color', '#fff')
+                        .style('pointer-events', 'all')*/
                         .style('display', 'block')
-                        .html('<strong>Title: </strong>' + data[index].title + "<br/> <small>Stall: " + data[index].stall + "</small>");
+                        .attr("transform", "translate(" + (bbox.x + bbox.width / 2) + "," + (bbox.y + bbox.height / 2) + ")")
+                        // .append('text')
+                    d3.select('.toolTipValue')
+                        .html('Title:' + data[index].title + "<br/> Stall: " + data[index].stall + "");
                     // console.log(data[index].title);
                     if (data[index].stall.length > 1) {
                         data[index].stall.forEach(function(d) {
-                            d3.select('#BA' + d).attr('fill', 'red');
+                            d3.select('#BA' + d).attr('fill', stallColor);
                         })
                     }
                 }
@@ -97,9 +109,24 @@ MapViewer.prototype.render = function() {
             .on('mouseout', function() {
                 svg.selectAll('#stall rect').attr('fill', '#6DDFE8');
 
-                d3.select('.tooltip').style('display', 'none');
+                d3.select('.tooltip')
+                    // .style('pointer-events', 'none')
+                    .style('display', 'none');
             });
 
-    })
+    });
     return this;
+}
+
+
+//helper functions
+function getIndex(data, id) {
+    for (var j = 0; j < data.length; j++) {
+        for (var i = 0; i < data[j].stall.length; i++) {
+            if (data[j].stall[i] == id.slice(2)) {
+                return j;
+            }
+        }
+    }
+    return 'undefined';
 }

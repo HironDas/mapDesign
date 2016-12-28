@@ -1,3 +1,14 @@
+Element.prototype.remove = function() {
+    this.parentElement.removeChild(this);
+}
+NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+    for (var i = this.length - 1; i >= 0; i--) {
+        if (this[i] && this[i].parentElement) {
+            this[i].parentElement.removeChild(this[i]);
+        }
+    }
+}
+
 var MapViewer = function() {
     this.img = arguments[0]
     this.data = arguments[1];
@@ -38,15 +49,6 @@ MapViewer.prototype.render = function() {
 
     this.svg = d3.select(id).append("svg");
     var svg = this.svg;
-    /*.attr('position', 'absolute')
-    .style('top', '0px')
-    .style('left', '0px')
-    .style('border', '1px #999 solid')
-    .style('padding', '5px')
-    .style('background-color', tooltipColor)
-    .style('pointer-events', 'none')
-    .style('line-height', '1')*/
-    // .html('Hiron Chandra DAs');
 
     d3.xml(this.img, function(err, documentFragment) {
         console.log(documentFragment);
@@ -55,7 +57,7 @@ MapViewer.prototype.render = function() {
             return;
         }
         var imgNode = documentFragment.getElementsByTagName("svg")[0];
-        console.log(imgNode.childNodes);
+        console.log(imgNode.id);
 
         ratio = imgNode.height.baseVal.value / imgNode.width.baseVal.value;
         console.log(ratio);
@@ -66,7 +68,7 @@ MapViewer.prototype.render = function() {
 
         var map = svg.node().appendChild(imgNode);
 
-        var tooltip = svg.select('#Layer_1').append('g')
+        var tooltip = svg.select('#' + imgNode.id).append('g')
             .attr('class', 'tooltip')
             .style('display', 'none')
         var tooltipBack = tooltip.append('rect')
@@ -125,6 +127,7 @@ MapViewer.prototype.render = function() {
                         .text('Title:' + data[index].title);
                     d3.select('.stallText')
                         .attr('x', (bbox.x + bbox.width / 2))
+                        .style('fill', '#fff')
                         .text('Stall:' + data[index].stall);
 
                     // console.log(data[index].title);
@@ -145,6 +148,27 @@ MapViewer.prototype.render = function() {
             });
 
     });
+    return this;
+}
+
+MapViewer.prototype.search = function() {
+
+    document.querySelector('#search').remove();
+    var select = document.createElement('select');
+    var data = this.data;
+
+    data.forEach(function(d) {
+        var option = document.createElement('option');
+        option.text = d.title;
+        option.value = d.title;
+        select.appendChild(option);
+    })
+
+    var div = document.createElement('div');
+    div.id = 'search';
+    document.querySelector(this.options.id)
+        .appendChild(div)
+        .appendChild(select);
     return this;
 }
 

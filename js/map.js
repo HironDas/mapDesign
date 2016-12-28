@@ -153,22 +153,49 @@ MapViewer.prototype.render = function() {
 
 MapViewer.prototype.search = function() {
 
-    document.querySelector('#search').remove();
+    if (document.querySelector('#search'))
+        document.querySelector('#search').remove();
+
     var select = document.createElement('select');
     var data = this.data;
 
-    data.forEach(function(d) {
-        var option = document.createElement('option');
-        option.text = d.title;
-        option.value = d.title;
-        select.appendChild(option);
-    })
+    data.map(function(d) { return d.title })
+        .sort().forEach(function(d) {
+            var option = document.createElement('option');
+            option.text = d;
+            option.value = d;
+            select.appendChild(option);
+        })
 
     var div = document.createElement('div');
     div.id = 'search';
     document.querySelector(this.options.id)
         .appendChild(div)
         .appendChild(select);
+
+    var stallColor = this.options.stallHoverColor
+
+    select.addEventListener('change', function() {
+        console.log(this.value);
+        console.log(data);
+        var title = this.value;
+
+        var stalls = data.filter(function(d) {
+            console.log(title);
+            return d.title.trim() == title.trim();
+        }).map(function(d) {
+            return d.stall;
+        }).reduce(function(a, b) {
+            return a.concat(b);
+        }, []).forEach(function(d) {
+            d3.selectAll('#stall rect').attr('fill', '#6DDFE8');
+
+            setTimeout(function() {
+                d3.select('#BA' + d).attr('fill', stallColor);
+            }, 50)
+        });
+        console.log(stalls);
+    }, false);
     return this;
 }
 

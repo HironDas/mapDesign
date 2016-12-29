@@ -16,6 +16,7 @@ var MapViewer = function() {
     this.options.margin = this.options.margin || {};
     this.options.stallHoverColor = this.options.stallHoverColor || '#ff0000';
     this.options.toolTipBgColor = this.options.toolTipBgColor || '#0000ff';
+    this.option.legendColor = this.option.legendColor || ['#ff0000', '#00ff00', '#0000ff'];
 
     var img = new Image();
 
@@ -210,4 +211,17 @@ function getIndex(data, id) {
         }
     }
     return 'undefined';
+}
+
+function getLegend(dtata) {
+    var name = ['single', 'double ', 'triple', 'quadruple', 'pentadruple', 'hexatruple', 'septuple', 'octuple', 'nonuple', 'decuple', 'undecuple', 'duodecuple', 'tredecuple']
+    var legend = [];
+
+    data.forEach(function(d, i) {
+        legend = name[d.length];
+    });
+
+    return legend.filter(function(d) {
+        return d !== 'undefined';
+    })
 }

@@ -9,6 +9,10 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
     }
 }
 
+String.prototype.capitalize = function() {
+    return this.substr(0, 1).toUpperCase() + this.substr(1);
+}
+
 var MapViewer = function() {
     this.img = arguments[0]
     this.data = arguments[1];
@@ -16,7 +20,7 @@ var MapViewer = function() {
     this.options.margin = this.options.margin || {};
     this.options.stallHoverColor = this.options.stallHoverColor || '#ff0000';
     this.options.toolTipBgColor = this.options.toolTipBgColor || '#0000ff';
-    this.option.legendColor = this.option.legendColor || ['#ff0000', '#00ff00', '#0000ff'];
+    this.options.legendColor = this.options.legendColor || d3.schemeCategory10; //d3.schemeCategory20 d3.schemeCategory20b d3.schemeCategory20c;
 
     var img = new Image();
 
@@ -32,15 +36,17 @@ MapViewer.prototype.setWidth = function(width) {
 
 
 MapViewer.prototype.render = function() {
-    var data = this.data;
+    var data = this.data.info;
+    var stalls = this.data.stalls;
     var stallColor = this.options.stallHoverColor;
     var tooltipColor = this.options.toolTipBgColor;
+    var legendColor = this.options.legendColor;
     var index;
     var margin = {
-        top: this.options.margin.top || 0,
+        top: this.options.margin.top || 20,
         right: this.options.margin.right || 0,
         bottom: this.options.margin.bottom || 0,
-        left: this.options.margin.left || 0
+        left: this.options.margin.left || 30
     };
     var width = this.options.width || 900;
     var ratio, height;
@@ -90,6 +96,36 @@ MapViewer.prototype.render = function() {
         tooltipsText.append('tspan')
             .attr('class', 'stallText')
             .attr('dy', '1.3em');
+
+        var legends = getLegend(stalls)
+        legends.push('Not Defined');
+        console.log(legends);
+
+        var legend = d3.select('#legend')
+            .attr('transform', 'translate(' + margin.left + ',' + ((+margin.top) + 40) + ')');
+
+        var legendCircle = legend.selectAll('circle')
+            .data(legends)
+            .enter()
+            .append('circle')
+            .attr('cx', 10)
+            .attr('cy', function(d, i) { return i * 15; })
+            .attr('r', 5)
+            .attr('fill', function(d, i) { return legendColor[i % legendColor.length]; });
+
+        var legendText = legend.selectAll('text')
+            .data(legends)
+            .enter()
+            .append('text')
+            .attr('x', 20)
+            .attr('y', function(d, i) { return i * 15 + 3; })
+            .text(function(d) { return d.capitalize() + " Stall" })
+            .attr('font-family', "Verdana")
+            .attr('font-size', '10')
+            .attr('fill', '#222');
+
+        stallColoring(stalls, legendColor, legends);
+
 
         svg.selectAll('#stall rect')
             .on('mouseover', function() {
@@ -141,14 +177,26 @@ MapViewer.prototype.render = function() {
 
             })
             .on('mouseout', function() {
-                svg.selectAll('#stall rect').attr('fill', '#6DDFE8');
-
+                // svg.selectAll('#stall rect').attr('fill', legendColor[legends.length - 1]);
+                stallColoring(stalls, legendColor, legends);
                 d3.select('.tooltip')
                     // .style('pointer-events', 'none')
                     .style('display', 'none');
             });
 
     });
+
+    function stallColoring(stallData, legendColor, legends) {
+        console.log(svg);
+        svg.selectAll('#stall rect').attr('fill', legendColor[legends.length - 1]);
+        // setTimeout(function() {
+        stallData.forEach(function(d, i) {
+            d.forEach(function(d, i, a) {
+                svg.select('#BA' + d).attr('fill', legendColor[a.length - 1]);
+            })
+        })
+
+    }
     return this;
 }
 
@@ -158,7 +206,7 @@ MapViewer.prototype.search = function() {
         document.querySelector('#search').remove();
 
     var select = document.createElement('select');
-    var data = this.data;
+    var data = this.data.info;
 
     data.map(function(d) { return d.title })
         .sort().forEach(function(d) {
@@ -189,7 +237,7 @@ MapViewer.prototype.search = function() {
         }).reduce(function(a, b) {
             return a.concat(b);
         }, []).forEach(function(d) {
-            d3.selectAll('#stall rect').attr('fill', '#6DDFE8');
+            d3.selectAll('#stall rect').attr('fill', '#999');
 
             setTimeout(function() {
                 d3.select('#BA' + d).attr('fill', stallColor);
@@ -213,15 +261,21 @@ function getIndex(data, id) {
     return 'undefined';
 }
 
-function getLegend(dtata) {
-    var name = ['single', 'double ', 'triple', 'quadruple', 'pentadruple', 'hexatruple', 'septuple', 'octuple', 'nonuple', 'decuple', 'undecuple', 'duodecuple', 'tredecuple']
+function getLegend(data) {
+    var name = ['single', 'double', 'triple', 'quadruple', 'pentadruple', 'hexatruple', 'septuple', 'octuple', 'nonuple', 'decuple', 'undecuple', 'duodecuple', 'tredecuple']
     var legend = [];
 
     data.forEach(function(d, i) {
-        legend = name[d.length];
+        legend.push(name[d.length - 1]);
     });
 
-    return legend.filter(function(d) {
-        return d !== 'undefined';
-    })
+    return legend.filter(function(d, i, a) {
+        return d !== 'undefined' && a.indexOf(d) == i;
+    }).map(function(d) {
+        return { index: name.indexOf(d), value: d };
+    }).sort(function(a, b) {
+        return a.index - b.index;
+    }).map(function(d) {
+        return d.value;
+    });
 }

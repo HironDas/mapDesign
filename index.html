@@ -13,71 +13,91 @@
     <!--<embed type="image/svg+xml" src="./mall_directory_bsm-1.svg" />-->
 
     <script>
-        var data = [{
-            stall: [2, 3, 4],
-            title: 'name of stall',
-            info: ' '
-        }, {
-            stall: [1],
-            title: 'Nobo Boi',
-            info: 'Md Mosharof Hossain'
-        }, {
-            stall: [7, 8],
-            title: 'Test Stall',
-            info: 'info about the stall'
-        }, {
-            stall: [5, 6],
-            title: 'Test Stall 3',
-            info: 'info about the stall'
-        }, {
-            stall: [9],
-            title: 'Test Stall 2',
-            info: 'info about the stall'
-        }, {
-            stall: [10, 11, 12, 13],
-            title: 'Test Stall 100',
-            info: 'info about the stall'
-        }, {
-            stall: [14],
-            title: 'Test Stall 23',
-            info: 'info about the stall'
-        }, {
-            stall: [15, 16, 17, 18],
-            title: 'Test Stall 40',
-            info: 'info about the stall'
-        }, {
-            stall: [20, 19],
-            title: 'Book Stall 1',
-            info: 'info about the stall'
-        }, {
-            stall: [21],
-            title: 'Book Stall',
-            info: 'info about the stall'
-        }, {
-            stall: [22, 23],
-            title: 'Book Stall 99',
-            info: 'info about the stall'
-        }, {
-            stall: [24],
-            title: 'Test Stall 5',
-            info: 'info about the stall'
-        }, {
-            stall: [25],
-            title: 'tea Stall',
-            info: 'info about the stall'
-        }, {
-            stall: [26],
-            title: 'Test Stall 1',
-            info: 'info about the stall'
-        }, {
-            stall: [27],
-            title: 'Just a Stall',
-            info: 'info about the stall'
-        }, {
-            stall: [28],
-            title: 'Book Stall testing',
-            info: 'info about the stall'
-        }];
+        var data = {
+            info: [{
+                stall: [2, 3, 4],
+                title: 'name of stall',
+                info: ' '
+            }, {
+                stall: [1],
+                title: 'Nobo Boi',
+                info: 'Md Mosharof Hossain'
+            }, {
+                stall: [7, 8],
+                title: 'Test Stall',
+                info: 'info about the stall'
+            }, {
+                stall: [5, 6],
+                title: 'Test Stall 3',
+                info: 'info about the stall'
+            }, {
+                stall: [9],
+                title: 'Test Stall 2',
+                info: 'info about the stall'
+            }, {
+                stall: [10, 11, 12, 13],
+                title: 'Test Stall 100',
+                info: 'info about the stall'
+            }, {
+                stall: [14],
+                title: 'Test Stall 23',
+                info: 'info about the stall'
+            }, {
+                stall: [15, 16, 17, 18],
+                title: 'Test Stall 40',
+                info: 'info about the stall'
+            }, {
+                stall: [20, 19],
+                title: 'Book Stall 1',
+                info: 'info about the stall'
+            }, {
+                stall: [21],
+                title: 'Book Stall',
+                info: 'info about the stall'
+            }, {
+                stall: [22, 23],
+                title: 'Book Stall 99',
+                info: 'info about the stall'
+            }, {
+                stall: [24],
+                title: 'Test Stall 5',
+                info: 'info about the stall'
+            }, {
+                stall: [25],
+                title: 'tea Stall',
+                info: 'info about the stall'
+            }, {
+                stall: [26],
+                title: 'Test Stall 1',
+                info: 'info about the stall'
+            }, {
+                stall: [27],
+                title: 'Just a Stall',
+                info: 'info about the stall'
+            }, {
+                stall: [28],
+                title: 'Book Stall testing',
+                info: 'info about the stall'
+            }],
+            stalls: [
+                [2, 3, 4],
+                [1],
+                [7, 8],
+                [5, 6],
+                [9],
+                [10, 11, 12, 13],
+                [14],
+                [15, 16, 17, 18],
+                [20, 19],
+                [21],
+                [22, 23],
+                [24],
+                [25],
+                [26],
+                [27],
+                [28]
+            ]
+        };
         var myMap = new MapViewer("./BanglaAccademicFIELD.svg", data, {
             id: '#map',
             width: 800

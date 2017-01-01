@@ -68,7 +68,7 @@ MapViewer.prototype.render = function() {
 
         ratio = imgNode.height.baseVal.value / imgNode.width.baseVal.value;
         console.log(ratio);
-        height = width * ratio;
+        height = width * ratio || width;
 
         svg.attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom);
@@ -98,7 +98,7 @@ MapViewer.prototype.render = function() {
             .attr('dy', '1.3em');
 
         var legends = getLegend(stalls)
-        legends.push('Not Defined');
+        legends.push('Undefined');
         console.log(legends);
 
         var legend = d3.select('#legend')

@@ -52,6 +52,10 @@ MapViewer.prototype.render = function() {
     var ratio, height;
     var id = this.options.id || 'body';
 
+    var zoom = d3.behavior.zoom()
+        .scaleExtent([1, 10])
+        .on("zoom", zoomed);
+
     d3.select(id).selectAll('svg').remove();
 
     this.svg = d3.select(id).append("svg");
@@ -71,7 +75,7 @@ MapViewer.prototype.render = function() {
         height = width * ratio || width;
 
         svg.attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom);
+            .attr("height", height + margin.top + margin.bottom).call(zoom);
 
         var map = svg.node().appendChild(imgNode);
 
@@ -123,6 +127,8 @@ MapViewer.prototype.render = function() {
             .attr('font-family', "Verdana")
             .attr('font-size', '10')
             .attr('fill', '#222');
+
+
 
         stallColoring(stalls, legendColor, legends);
 
@@ -245,6 +251,11 @@ MapViewer.prototype.search = function() {
         });
         console.log(stalls);
     }, false);
+
+    function zoomed() {
+        svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+    }
+
     return this;
 }
 

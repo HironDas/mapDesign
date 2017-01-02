@@ -75,9 +75,9 @@ MapViewer.prototype.render = function() {
         height = width * ratio || width;
 
         svg.attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom).call(zoom);
+            .attr("height", height + margin.top + margin.bottom);
 
-        var map = svg.node().appendChild(imgNode);
+        var map = svg.node().appendChild(imgNode).call(zoom);
 
         var tooltip = svg.select('#' + imgNode.id).append('g')
             .attr('class', 'tooltip')
@@ -253,7 +253,7 @@ MapViewer.prototype.search = function() {
     }, false);
 
     function zoomed() {
-        svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+        map.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
     }
 
     return this;

@@ -6,3 +6,4 @@ node_modules/
 #*.svg
 data/
 *.zip
+*.pdf

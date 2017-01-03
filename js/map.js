@@ -52,9 +52,9 @@ MapViewer.prototype.render = function() {
     var ratio, height;
     var id = this.options.id || 'body';
 
-    var zoom = d3.behavior.zoom()
+    /*var zoom = d3.behavior.zoom()
         .scaleExtent([1, 10])
-        .on("zoom", zoomed);
+        .on("zoom", zoomed);*/
 
     d3.select(id).selectAll('svg').remove();
 
@@ -64,7 +64,7 @@ MapViewer.prototype.render = function() {
     d3.xml(this.img, function(err, documentFragment) {
         console.log(documentFragment);
         if (err) {
-            consoel.log("The Map is not Found");
+            console.log("The Map is not Found");
             return;
         }
         var imgNode = documentFragment.getElementsByTagName("svg")[0];
@@ -77,7 +77,7 @@ MapViewer.prototype.render = function() {
         svg.attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom);
 
-        var map = svg.node().appendChild(imgNode).call(zoom);
+        var map = svg.node().appendChild(imgNode); //.call(zoom);
 
         var tooltip = svg.select('#' + imgNode.id).append('g')
             .attr('class', 'tooltip')
@@ -252,9 +252,9 @@ MapViewer.prototype.search = function() {
         console.log(stalls);
     }, false);
 
-    function zoomed() {
+    /*function zoomed() {
         map.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-    }
+    }*/
 
     return this;
 }

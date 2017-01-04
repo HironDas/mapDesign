@@ -22,8 +22,6 @@ var MapViewer = function() {
     this.options.toolTipBgColor = this.options.toolTipBgColor || '#0000ff';
     this.options.legendColor = this.options.legendColor || d3.schemeCategory10; //d3.schemeCategory20 d3.schemeCategory20b d3.schemeCategory20c;
 
-    var img = new Image();
-
     console.log(this.img);
 }
 
@@ -129,8 +127,12 @@ MapViewer.prototype.render = function() {
             .attr('fill', '#222');
 
 
+        if (documentFragment.URL.split('/').pop() == 'BanglaAccademicFIELD.svg') {
 
-        stallColoring(stalls, legendColor, legends);
+            stallColoring(stalls, legendColor, legends, true);
+        } else {
+            stallColoring(stalls, legendColor, legends);
+        }
 
 
         svg.selectAll('#stall rect')
@@ -192,13 +194,18 @@ MapViewer.prototype.render = function() {
 
     });
 
-    function stallColoring(stallData, legendColor, legends) {
-        console.log(svg);
+    function stallColoring(stallData, legendColor, legends, flag = false) {
+
         svg.selectAll('#stall rect').attr('fill', legendColor[legends.length - 1]);
         // setTimeout(function() {
         stallData.forEach(function(d, i) {
             d.forEach(function(d, i, a) {
-                svg.select('#BA' + d).attr('fill', legendColor[a.length - 1]);
+                if (flag) {
+                    svg.select('#BA' + d).attr('fill', legendColor[a.length - 1]);
+                } else {
+                    svg.select('#' + d).attr('fill', legendColor[a.length - 1]);
+                }
+
             })
         })
 

@@ -35,7 +35,11 @@ MapViewer.prototype.setWidth = function(width) {
 
 MapViewer.prototype.render = function() {
     var data = this.data.info;
-    var stalls = this.data.stalls;
+    var stalls = this.img.split('/').pop() == 'BanglaAcademyFIELD.svg' ? this.data.stalls.map(function(d) {
+        return d.map(function(d) {
+            return d = "BA" + d;
+        });
+    }) : this.data.stalls;
     var stallColor = this.options.stallHoverColor;
     var tooltipColor = this.options.toolTipBgColor;
     var legendColor = this.options.legendColor;
@@ -127,12 +131,8 @@ MapViewer.prototype.render = function() {
             .attr('fill', '#222');
 
 
-        if (documentFragment.URL.split('/').pop() == 'BanglaAccademicFIELD.svg') {
 
-            stallColoring(stalls, legendColor, legends, true);
-        } else {
-            stallColoring(stalls, legendColor, legends);
-        }
+        stallColoring(stalls, legendColor, legends);
 
 
         svg.selectAll('#stall rect')
@@ -194,16 +194,18 @@ MapViewer.prototype.render = function() {
 
     });
 
-    function stallColoring(stallData, legendColor, legends, flag = false) {
+    function stallColoring(stallData, legendColor, legends) {
 
         svg.selectAll('#stall rect').attr('fill', legendColor[legends.length - 1]);
-        // setTimeout(function() {
+
         stallData.forEach(function(d, i) {
             d.forEach(function(d, i, a) {
-                if (flag) {
-                    svg.select('#BA' + d).attr('fill', legendColor[a.length - 1]);
-                } else {
-                    svg.select('#' + d).attr('fill', legendColor[a.length - 1]);
+                try {
+                    if (!svg.select('#' + d).empty()) {
+                        svg.select('#' + d).attr('fill', legendColor[a.length - 1]);
+                    }
+                } catch (e) {
+                    // console.log(e);
                 }
 
             })
@@ -271,8 +273,14 @@ MapViewer.prototype.search = function() {
 function getIndex(data, id) {
     for (var j = 0; j < data.length; j++) {
         for (var i = 0; i < data[j].stall.length; i++) {
-            if (data[j].stall[i] == id.slice(2)) {
-                return j;
+            if (isNaN(data[j].stall[i])) {
+                if (data[j].stall[i] == id) {
+                    return j;
+                }
+            } else {
+                if (data[j].stall[i] == id.slice(2)) {
+                    return j;
+                }
             }
         }
     }

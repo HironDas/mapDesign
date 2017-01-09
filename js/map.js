@@ -35,11 +35,11 @@ MapViewer.prototype.setWidth = function(width) {
 
 MapViewer.prototype.render = function() {
     var data = this.data.info;
-    var stalls = this.img.split('/').pop() == 'BanglaAcademyFIELD.svg' ? this.data.stalls.map(function(d) {
+    var stalls = this.img.split('/').pop() == 'BanglaAcademyFIELD.svg' ? this.data.stalls.filter(function(d, i){ return d.length != 0;}).map(function(d) {
         return d.map(function(d) {
             return d = "BA" + d;
         });
-    }) : this.data.stalls;
+    }) : this.data.stalls.filter(function(d, i){ return d.length != 0;});
     var stallColor = this.options.stallHoverColor;
     var tooltipColor = this.options.toolTipBgColor;
     var legendColor = this.options.legendColor;
@@ -232,6 +232,7 @@ MapViewer.prototype.search = function() {
         })
 
     var div = document.createElement('div');
+    div.innerHTML = "Stall Name: ";
     div.id = 'search';
     document.querySelector(this.options.id)
         .appendChild(div)

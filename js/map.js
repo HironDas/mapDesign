@@ -107,8 +107,8 @@ MapViewer.prototype.render = function() {
         legends.push('Undefined');
         console.log(legends);
 
-        var legend = d3.select('#legend')
-            .attr('transform', 'translate(' + margin.left + ',' + ((+margin.top) + 40) + ')');
+        var legend = d3.select('#legend');
+        // .attr('transform', 'translate(' + margin.left + ',' + ((+margin.top) + 40) + ')');
 
         var legendCircle = legend.selectAll('circle')
             .data(legends)
@@ -127,7 +127,7 @@ MapViewer.prototype.render = function() {
             .attr('y', function(d, i) { return i * 15 + 3; })
             .text(function(d) { return d.capitalize() + " Stall" })
             .attr('font-family', "Verdana")
-            .attr('font-size', '10')
+            .attr('font-size', '8')
             .attr('fill', '#222');
 
 

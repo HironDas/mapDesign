@@ -35,11 +35,11 @@ MapViewer.prototype.setWidth = function(width) {
 
 MapViewer.prototype.render = function() {
     var data = this.data.info;
-    var stalls = this.img.split('/').pop() == 'BanglaAcademyFIELD.svg' ? this.data.stalls.filter(function(d, i){ return d.length != 0;}).map(function(d) {
+    var stalls = this.img.split('/').pop() == 'BanglaAcademyFIELD.svg' ? this.data.stalls.filter(function(d, i) { return d.length != 0; }).map(function(d) {
         return d.map(function(d) {
             return d = "BA" + d;
         });
-    }) : this.data.stalls.filter(function(d, i){ return d.length != 0;});
+    }) : this.data.stalls.filter(function(d, i) { return d.length != 0; });
     var stallColor = this.options.stallHoverColor;
     var tooltipColor = this.options.toolTipBgColor;
     var legendColor = this.options.legendColor;
@@ -137,15 +137,15 @@ MapViewer.prototype.render = function() {
 
         svg.selectAll('#stall rect')
             .on('mouseover', function() {
-                console.log(this.getBBox());
-                console.log(d3.select('.tooltip'));
+                // console.log(this.getBBox());
+                // console.log(d3.select('.tooltip'));
                 // this.style('fill', 'red');
                 this.attributes.fill.value = stallColor;
 
                 index = getIndex(data, this.id);
 
                 var bbox = this.getBBox();
-                console.log(bbox);
+                // console.log(bbox);
 
                 if (index !== 'undefined') {
                     d3.select('.tooltip')
@@ -175,10 +175,15 @@ MapViewer.prototype.render = function() {
                         .style('fill', '#fff')
                         .text('Stall:' + data[index].stall);
 
-                    // console.log(data[index].title);
+                    console.log(data[index]);
                     if (data[index].stall.length > 1) {
                         data[index].stall.forEach(function(d) {
-                            d3.select('#BA' + d).attr('fill', stallColor);
+                            if (isNaN(d)) {
+                                // console.log(d);
+                                d3.select("#" + d.trim()).attr('fill', stallColor);
+                            } else {
+                                d3.select('#BA' + d.trim()).attr('fill', stallColor);
+                            }
                         })
                     }
                 }
@@ -249,14 +254,19 @@ MapViewer.prototype.search = function() {
             console.log(title);
             return d.title.trim() == title.trim();
         }).map(function(d) {
-            return d.stall;
+            return d.stall
         }).reduce(function(a, b) {
             return a.concat(b);
         }, []).forEach(function(d) {
             d3.selectAll('#stall rect').attr('fill', '#999');
 
             setTimeout(function() {
-                d3.select('#BA' + d).attr('fill', stallColor);
+                if (isNaN(d)) {
+                    // console.log(d);
+                    d3.select("#" + d.trim()).attr('fill', stallColor);
+                } else {
+                    d3.select('#BA' + d.trim()).attr('fill', stallColor);
+                }
             }, 50)
         });
         console.log(stalls);
@@ -274,12 +284,12 @@ MapViewer.prototype.search = function() {
 function getIndex(data, id) {
     for (var j = 0; j < data.length; j++) {
         for (var i = 0; i < data[j].stall.length; i++) {
-            if (isNaN(data[j].stall[i])) {
-                if (data[j].stall[i] == id) {
+            if (isNaN(data[j].stall[i].trim())) {
+                if (data[j].stall[i].trim() == id) {
                     return j;
                 }
             } else {
-                if (data[j].stall[i] == id.slice(2)) {
+                if (data[j].stall[i].trim() == id.slice(2)) {
                     return j;
                 }
             }
